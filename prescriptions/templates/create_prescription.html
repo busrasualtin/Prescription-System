@@ -1,0 +1,29 @@
+<form method="post" action="{% url 'create-prescription' %}">
+    {% csrf_token %}
+    <p>Pharmacy: XYZ Pharmacy</p>
+    <label for="person_id">Person ID No:</label>
+    <input type="text" name="person_id" id="person_id">
+    <button type="button" onclick="searchPatient()">Search</button><br>
+
+    <label for="patient_name">Full Name:</label>
+    <input type="text" name="patient_name" id="patient_name"><br>
+
+    <!-- Diğer form alanları buraya eklenebilir -->
+
+    <input type="submit" value="Submit Prescription">
+</form>
+
+<script>
+    function searchPatient() {
+        var personId = document.getElementById("person_id").value;
+
+        fetch(`/prescriptions/api/get_patient_name/${personId}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("patient_name").value = data.name;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
